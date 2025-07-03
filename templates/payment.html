@@ -6,155 +6,223 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet" />
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    body { font-family: 'Open Sans', sans-serif; background-color: #f5f7fa; margin: 0; padding: 20px; }
-    .payment-container { max-width: 500px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.08); }
-    h2 { text-align: center; font-family: 'Playfair Display', serif; margin-bottom: 25px; }
-    .payment-options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-    .option { display: flex; align-items: center; gap: 10px; background: #f1f3f5; padding: 12px; border-radius: 8px; cursor: pointer; }
-    .option input[type="radio"] { transform: scale(1.2); }
-    input[type="text"], input[type="password"] {
-      width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #ccc;
-      border-radius: 6px; font-size: 1rem;
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #2f2f2f;
+      margin: 0;
+      padding: 0;
     }
-    .upi-buttons a {
-      display: inline-block; background-color: #007bff; color: white;
-      padding: 8px 14px; margin: 10px 10px 0 0; border-radius: 6px;
-      text-decoration: none;
+
+    .outer-wrapper {
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
     }
-    .qr-section img { margin-top: 10px; }
-    .amount-display { margin-top: 15px; font-weight: bold; }
-    button { width: 100%; background-color: #28a745; color: white; padding: 12px; border: none;
-             font-size: 1rem; border-radius: 8px; cursor: pointer; margin-top: 25px; }
+
+    .payment-container {
+      background: #fff;
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 450px;
+    }
+
+    h2 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      margin-bottom: 20px;
+      color: #222;
+    }
+
+    .top-note {
+      text-align: center;
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 25px;
+      font-weight: 600;
+      background: #fff3cd;
+      padding: 12px;
+      border-left: 5px solid #f4c542;
+      border-radius: 6px;
+    }
+
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f3f4f6;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+
+    .option input[type="radio"] {
+      transform: scale(1.4);
+    }
+
+    button {
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      padding: 14px;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
     .flash-message {
-      background-color: #ffefc3; padding: 10px; border: 1px solid #ffe58f;
-      border-radius: 6px; margin-bottom: 20px; text-align: center;
+      background-color: #fff3cd;
+      padding: 12px;
+      border: 1px solid #ffeeba;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    /* 📱 Mobile optimization */
+    @media (max-width: 600px) {
+      .outer-wrapper {
+        padding: 24px 12px;
+        align-items: flex-start;
+      }
+
+      .payment-container {
+        padding: 28px 20px;
+        border-radius: 12px;
+        max-width: 100%;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .top-note {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+
+      .option {
+        font-size: 1rem;
+        padding: 12px;
+      }
+
+      button {
+        font-size: 1.05rem;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
-<div class="payment-container">
-  <h2>Select Payment Mode</h2>
+  <div class="outer-wrapper">
+    <div class="payment-container">
+      <h2>Select Payment Mode</h2>
 
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div class="flash-message">
-        {% for message in messages %}
-          {{ message }}
-        {% endfor %}
+      <div class="top-note">
+        Currently we only accept online payment via <strong>UPI, Credit Card, or Net Banking</strong>. <br>
+        Please proceed with payment.
       </div>
-    {% endif %}
-  {% endwith %}
 
-  <form id="payment-form">
-    <div class="payment-options">
-   
-      <label class="option"><input type="radio" name="payment_method" value="upi"> UPI (PhonePe / GPay / Paytm)</label>
-      <label class="option"><input type="radio" name="payment_method" value="razorpay"> Razorpay (UPI/Card/Wallet)</label>
-     
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash-message">
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form id="payment-form">
+        <div class="payment-options">
+          <label class="option">
+            <input type="radio" name="payment_method" value="razorpay"> Razorpay (UPI / Card / Wallet / NetBanking)
+          </label>
+        </div>
+        <button type="button" id="continue-button">Continue to Payment</button>
+      </form>
+
+      <!-- Razorpay hidden form -->
+      <form id="razorpay-success-form" action="{{ url_for('payment_success') }}" method="POST" style="display: none;">
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+      </form>
     </div>
+  </div>
 
-    <!-- CARD SECTION -->
-    <div id="card-section" style="display:none;">
-      <label>Card Number: <input type="text" maxlength="16" placeholder="1234 5678 9012 3456"></label>
-      <label>Expiry (MM/YY): <input type="text" maxlength="5" placeholder="MM/YY"></label>
-      <label>CVV: <input type="password" maxlength="3" placeholder="123"></label>
-    </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const continueBtn = document.getElementById("continue-button");
 
-    <!-- UPI SECTION -->
-    <div id="upi-section" style="display:none;">
-      <p><strong>Choose a UPI App:</strong></p>
-      <div class="upi-buttons">
-        {% for app in ["PhonePe", "Google Pay", "Paytm"] %}
-          <a href="upi://pay?pa=techweldengineers@upi&pn=TechWeld+Engineers&am={{ amount }}&cu=INR&tn=Order+Payment">{{ app }}</a>
-        {% endfor %}
-      </div>
-      <div class="qr-section">
-        <p>or Pay using QR Code</p>
-        <img src="{{ url_for('generate_payment_qr', amount=amount) }}" alt="QR Code" width="250">
-      </div>
-      <div class="amount-display">Total Payable Amount: ₹{{ amount }}</div>
-    </div>
-
-    <button type="button" id="continue-button">Continue</button>
-  </form>
-
-  <!-- Hidden form to submit payment response to backend -->
-  <form id="razorpay-success-form" action="{{ url_for('payment_success') }}" method="POST" style="display: none;">
-    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
-    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
-    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
-  </form>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const upiSection = document.getElementById("upi-section");
-    const cardSection = document.getElementById("card-section");
-    const continueBtn = document.getElementById("continue-button");
-
-    const radios = document.querySelectorAll('input[name="payment_method"]');
-    radios.forEach(r => r.addEventListener("change", () => {
-      const selected = document.querySelector('input[name="payment_method"]:checked').value;
-      upiSection.style.display = selected === "upi" ? "block" : "none";
-      cardSection.style.display = selected === "card" ? "block" : "none";
-    }));
-
-    continueBtn.addEventListener("click", async function () {
-      const selected = document.querySelector('input[name="payment_method"]:checked');
-      if (!selected) {
-        alert("Please select a payment method.");
-        return;
-      }
-
-      const method = selected.value;
-
-      if (method === "razorpay") {
-        try {
-          const response = await fetch('/create_order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount: {{ amount * 100 }} })
-          });
-          const data = await response.json();
-          if (!data.order_id) {
-            alert("Failed to create Razorpay order.");
-            return;
-          }
-
-          const options = {
-            key: "rzp_test_aAhXUWNLte2RJ5",  // Replace with your Razorpay Key
-            amount: data.amount,
-            currency: "INR",
-            name: "TechWeld",
-            description: "Test Transaction",
-            order_id: data.order_id,
-            handler: function (response) {
-              document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
-              document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
-              document.getElementById('razorpay_signature').value = response.razorpay_signature;
-              document.getElementById('razorpay-success-form').submit();
-            },
-            prefill: {
-              name: "Test User",
-              email: "test@example.com",
-              contact: "9999999999"
-            },
-            theme: { color: "#3399cc" }
-          };
-
-          const rzp = new Razorpay(options);
-          rzp.open();
-        } catch (error) {
-          console.error("Razorpay Error:", error);
-          alert("Razorpay payment failed.");
+      continueBtn.addEventListener("click", async function () {
+        const selected = document.querySelector('input[name="payment_method"]:checked');
+        if (!selected) {
+          alert("Please select a payment method.");
+          return;
         }
-      } else {
-        // Just redirect for other modes
-        window.location.href = `/${method}`;
-      }
+
+        if (selected.value === "razorpay") {
+          try {
+            const response = await fetch('/create_order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ amount: {{ amount * 100 }} })
+            });
+            const data = await response.json();
+            if (!data.order_id) {
+              alert("Failed to create Razorpay order.");
+              return;
+            }
+
+            const options = {
+              key: "rzp_test_aAhXUWNLte2RJ5",
+              amount: data.amount,
+              currency: "INR",
+              name: "TechWeld",
+              description: "Order Payment",
+              order_id: data.order_id,
+              handler: function (response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('razorpay-success-form').submit();
+              },
+              prefill: {
+                name: "Test User",
+                email: "test@example.com",
+                contact: "9999999999"
+              },
+              theme: { color: "#3399cc" }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+          } catch (error) {
+            console.error("Razorpay Error:", error);
+            alert("Payment failed. Please try again.");
+          }
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
 </html>

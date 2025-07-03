@@ -3,40 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Your Cart - TechWeld Engineers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-ywzxN+K1mxXH3YJqkkuOGZC7jR8JzWZ3+XUosOfTyLUOSf8hN94ibnvb7vI1q7Pf1DFkeZ9Nm9+nU0OQZgRIbg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
 
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
       margin: 0;
       padding: 20px 20px 40px;
-      padding-top: 100px; /* space for fixed navbar */
+      padding-top: 100px;
       background-color: #f5f5f5;
-      box-sizing: border-box;
     }
 
-    h2,
-    h3,
-    h4 {
+    h2, h3, h4 {
       font-family: 'Playfair Display', serif;
     }
 
@@ -48,29 +29,22 @@
       display: flex;
       flex-direction: column;
       gap: 40px;
-      box-sizing: border-box;
     }
 
-    .cart-items {
-      width: 100%;
-    }
-
-    .cart-item {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 20px;
-      align-items: center;
-    }
-
+   .cart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  text-align: center;
+}
     .cart-item img {
-      width: 120px;
+      width: 110px;
       border-radius: 6px;
       margin-right: 20px;
-    }
-
-    .item-details {
-      flex-grow: 1;
+ flex-shrink: 0;
     }
 
     .item-details h4 {
@@ -78,69 +52,32 @@
     }
 
     .item-details p {
-      margin: 2px 0;
-    }
-
-    .price-section {
-      text-align: right;
-      font-weight: bold;
-      min-width: 100px;
-    }
-
-    .old-price {
-      text-decoration: line-through;
-      color: gray;
-      font-weight: normal;
-      margin-right: 10px;
-    }
-
-    .save-text {
-      color: green;
-      font-size: 13px;
-    }
-
-    .qty {
-      margin: 10px 0;
-    }
-
-    .qty form {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      margin: 4px 0;
     }
 
     .qty button {
-      padding: 3px 10px;
-      background: #eee;
+      padding: 6px 14px;
+      font-size: 18px;
       border: 1px solid #ccc;
+      background: #eee;
       cursor: pointer;
     }
 
-    .action-links {
-      margin-top: 8px;
-    }
-
-    .action-links button {
-      background: none;
-      border: none;
-      color: #007BFF;
-      cursor: pointer;
-      font-size: 14px;
+    .qty span {
+      font-size: 16px;
+      padding: 0 8px;
     }
 
     .cart-summary {
       border-top: 2px solid #ddd;
       padding-top: 30px;
-    }
-
-    .cart-summary h3 {
-      margin-bottom: 15px;
+      font-size: 17px;
     }
 
     .summary-line {
       display: flex;
       justify-content: space-between;
-      margin: 8px 0;
+      margin: 10px 0;
     }
 
     .total {
@@ -153,28 +90,23 @@
     .checkout-btn {
       display: block;
       margin-top: 20px;
-      padding: 12px;
-      text-align: center;
+      padding: 14px;
       background-color: black;
       color: white;
-      text-decoration: none;
+      text-align: center;
+      border-radius: 6px;
       font-weight: bold;
-      border-radius: 4px;
-    }
-
-    .coupon-box {
-      margin-top: 20px;
+      text-decoration: none;
     }
 
     .coupon-box input {
       width: 70%;
-      padding: 8px;
-      border: 1px solid #ccc;
+      padding: 10px;
       margin-right: 10px;
     }
 
     .coupon-box button {
-      padding: 8px 12px;
+      padding: 10px 14px;
       background: black;
       color: white;
       border: none;
@@ -187,30 +119,19 @@
       padding: 50px 0;
     }
 
-    /* Navbar styles */
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: #000;
-      padding: 10px 40px;
+      padding: 12px 24px;
       font-family: 'Open Sans', sans-serif;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 10000;
-      box-sizing: border-box;
-    }
-
-    .navbar-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      box-sizing: border-box;
     }
 
     .logo {
@@ -246,49 +167,69 @@
       text-decoration: none;
       font-size: 16px;
       font-weight: 500;
-      transition: color 0.3s;
     }
 
-    .nav-links li a:hover {
-      color: #ffcc00;
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 4px 0;
     }
 
     @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
       .nav-links {
         flex-direction: column;
-        background: #000;
+        background-color: #000;
         position: absolute;
-        right: 0;
         top: 60px;
-        display: none;
+        left: 0;
         width: 100%;
-        text-align: right;
-        padding: 1rem;
+        padding: 20px;
+        display: none;
       }
 
       .nav-links.show {
         display: flex;
       }
+
+      .nav-links li {
+        text-align: center;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 <body>
+
   <!-- Navbar -->
   <nav class="navbar">
-    <div class="navbar-container">
-      <div class="logo">
-        <img src="{{ url_for('static', filename='pictures/TWE.png') }}" alt="Logo" />
-           </div>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="{{ url_for('products') }}">Products</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/cart">Cart</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/login">Login</a></li>
-      </ul>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='pictures/TWE.png') }}" alt="Logo" />
     </div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="{{ url_for('products') }}">Products</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/cart">Cart</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/login">Login</a></li>
+    </ul>
   </nav>
 
   <!-- Cart Content -->
@@ -298,51 +239,31 @@
 
       {% if cart_items %}
       {% for item in cart_items %}
-      <div class="cart-item" style="display:flex; align-items:center; margin-bottom:20px;">
-        <!-- Product Image -->
-        <img
-          src="{{ url_for('static', filename=item.image) }}"
-          alt="{{ item.name }}"
-          style="width:100px; height:auto; margin-right:15px;"
-        />
-
-        <!-- Details and Quantity Controls -->
+      <div class="cart-item">
+        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" />
         <div class="item-details">
           <h4>{{ item.name }}</h4>
           <p>Price: ₹{{ item.price }}</p>
-          <p class="save-text">Savings: ₹{{ item.savings }}</p>
-
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <form
-              action="{{ url_for('update_cart') }}"
-              method="POST"
-              style="display: flex; align-items: center; gap: 10px;"
-            >
+                 <div class="qty">
+            <form action="{{ url_for('update_cart') }}" method="POST">
               <input type="hidden" name="product_id" value="{{ item.product_id }}" />
-              <button type="submit" name="action" value="decrease" style="padding: 5px 10px;">
-                -
-              </button>
+              <button type="submit" name="action" value="decrease">-</button>
               <span>{{ item.quantity }}</span>
-              <button type="submit" name="action" value="increase" style="padding: 5px 10px;">
-                +
-              </button>
-            </form>
-
-            <form action="{{ url_for('remove_from_cart') }}" method="POST" style="display: inline;">
-              <input type="hidden" name="product_id" value="{{ item.product_id }}" />
-              <button
-                type="submit"
-                style="background: none; border: none; color: red; font-size: 14px; cursor: pointer;"
-              >
-                <i class="fas fa-trash"></i> Remove
-              </button>
+              <button type="submit" name="action" value="increase">+</button>
             </form>
           </div>
+
+          <form action="{{ url_for('remove_from_cart') }}" method="POST">
+            <input type="hidden" name="product_id" value="{{ item.product_id }}" />
+            <button type="submit" style="background: none; border: none; color: red; font-size: 14px; cursor: pointer;">
+              <i class="fas fa-trash"></i> Remove
+            </button>
+          </form>
         </div>
       </div>
       {% endfor %}
       {% else %}
-      <p>Your cart is empty.</p>
+      <p class="empty-cart">Your cart is empty.</p>
       {% endif %}
     </div>
 
@@ -350,19 +271,23 @@
     <div class="cart-summary">
       <h3>Order Details</h3>
       <div class="summary-line"><span>Bag Total</span><span>₹{{ total_original }}</span></div>
-      <div class="summary-line">
-        <span>Bag Discount</span><span style="color: green;">- ₹{{ total_discount }}</span>
-      </div>
+      <div class="summary-line"><span>Bag Discount</span><span style="color: green;">- ₹{{ total_discount }}</span></div>
       <div class="summary-line"><span>Delivery Fee</span><span style="color: green;">Free</span></div>
       <div class="summary-line total"><span>Order Total</span><span>₹{{ total }}</span></div>
 
       <a href="{{ url_for('checkout') }}" class="checkout-btn">PROCEED TO SHIPPING</a>
-      <div class="coupon-box">
-        <input type="text" placeholder="Enter coupon code" />
-        <button>Apply</button>
-      </div>
-    </div>
+
+         </div>
     {% endif %}
   </div>
+
+  <!-- Mobile Menu Toggle Script -->
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+  </script>
 </body>
 </html>

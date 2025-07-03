@@ -458,12 +458,7 @@ def register():
         if password != confirm_password:
             return render_template('register.html', error='Passwords do not match.')
 
-        if (len(password) < 8 or not any(c.isupper() for c in password)
-                or not any(c.islower() for c in password)
-                or not any(c.isdigit() for c in password)
-                or not any(c in '!@#$%^&*(),.?":{}|<>' for c in password)):
-            return render_template('register.html', error='Password must meet all security requirements.')
-
+  
         # ✅ Generate password hash with pbkdf2 (compatible with Werkzeug)
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
