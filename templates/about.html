@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us | TechWeldEngineers</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      background-color: #000;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      height: 40px;
+      width: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background-color: white;
+    }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding-left: 0;
+      flex-wrap: wrap;
+    }
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: #ffcc00;
+    }
+
+    /* Hamburger menu */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 4px 0;
+    }
+
+    /* Hero */
+    .hero {
+      background: url("/static/pictures/bg.jpg") no-repeat center center/cover;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      text-align: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      margin: 0;
+    }
+
+    /* Content */
+    .content {
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 0 20px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .content p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    footer {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 50px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        background: #000;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        display: none;
+        width: 100%;
+        text-align: right;
+        padding: 1rem 20px;
+        box-sizing: border-box;
+      }
+      .nav-links.show {
+        display: flex;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .content h2 {
+        font-size: 2rem;
+      }
+      .content p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='pictures/TWE.png') }}" alt="Logo" />
+      </div>
+      <div class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" role="button" tabindex="0">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ url_for('products') }}">Products</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/cart">Cart</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="/login">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>About Us</h1>
+  </div>
+
+  <div class="content">
+    <h2>Our Story</h2>
+    <p>
+      Founded in 2019, TechWeldEngineers began its journey with a vision to redefine excellence in the welding industry.<br />
+      With years of dedicated service and expertise, we have been providing reliable, efficient, and innovative welding solutions to a wide range of industries.<br />
+      From small workshops to large-scale industries, our commitment remains the same: delivering unmatched quality and performance.
+    </p><br/>
+
+    <h2>What We Do</h2>
+    <p>
+      At TechWeldEngineers, we specialize in providing comprehensive welding solutions.
+      Whether you need advanced welding equipment, tailored consultation, or expert repair services, we’ve got you covered.
+      Driven by passion and guided by professionalism, we are where <strong>Welding Meets Excellence</strong>.
+    </p>
+  </div>
+
+  <footer>
+    &copy; 2019-2025 TechWeldEngineers. All rights reserved.
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    // Accessibility: toggle menu on Enter or Space key
+    menuToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        navLinks.classList.toggle('show');
+      }
+    });
+  </script>
+</body>
+</html>
+

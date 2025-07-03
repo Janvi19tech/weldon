@@ -1,0 +1,20 @@
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_aAhXUWNLte2RJ5",  // Replace with your test/live key
+        "amount": 50000, // amount in paise = ₹500
+        "currency": "INR",
+        "name": "TechWeld",
+        "description": "Order Payment",
+        "handler": function (response){
+            alert('Payment successful. Payment ID: ' + response.razorpay_payment_id);
+            window.location.href = "/payment_success";  // or your own route
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+</script>

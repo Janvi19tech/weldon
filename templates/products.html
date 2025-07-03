@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Products - TechWeldEngineers</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Playfair+Display&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f8f8f8;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #000;
+      color: white;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: nowrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 40px;
+      width: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background-color: white;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background: white;
+      margin: 4px 0;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-container {
+        flex-wrap: nowrap;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        background: #000;
+        position: absolute;
+        right: 0;
+        top: 60px;
+        display: none;
+        width: 100%;
+        text-align: right;
+        padding: 1rem;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #fff;
+      padding: 1rem;
+      border-right: 1px solid #ddd;
+    }
+.sidebar label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+
+    .products-section {
+      flex: 1;
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .top-bar input,
+    .top-bar select {
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      min-width: 150px;
+      flex: 1;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #222;
+    }
+
+    .product-price {
+      color: #444;
+      font-size: 0.95rem;
+      margin: 0.5rem 0;
+    }
+
+    .add-to-cart {
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .product-description-link {
+      display: block;
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: #007bff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        background: #fff;
+        height: calc(100vh - 60px);
+        width: 250px;
+        transform: translateX(-100%);
+        z-index: 1001;
+        transition: transform 0.3s ease;
+        border-right: 1px solid #ddd;
+        padding: 1rem;
+      }
+
+      .sidebar.show {
+        transform: translateX(0);
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filter-toggle-btn {
+        position: fixed;
+        top: 70px;
+        left: 10px;
+        z-index: 1100;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='pictures/TWE.png') }}" alt="Logo" />
+    </div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div><div></div><div></div>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="{{ url_for('products') }}">Products</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/cart">Cart</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/login">Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Filter Toggle Button -->
+<button class="filter-toggle-btn" onclick="document.getElementById('sidebar').classList.toggle('show')">Filters</button>
+
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h3>Category</h3>
+    <label><input type="checkbox" class="category-filter" value="Machine" /> Machines</label>
+    <label><input type="checkbox" class="category-filter" value="Gloves" /> Gloves</label>
+    <label><input type="checkbox" class="category-filter" value="Helmet" /> Helmets</label>
+    <label><input type="checkbox" class="category-filter" value="Glasses" /> Glasses</label>
+    <label><input type="checkbox" class="category-filter" value="Holders" /> Holders</label>
+
+    <h3>Price</h3>
+    <label><input type="radio" name="price" value="0-1000" /> Under ₹1000</label>
+    <label><input type="radio" name="price" value="1000-5000" /> ₹1000–₹5000</label>
+    <label><input type="radio" name="price" value="5000-99999" /> Above ₹5000</label>
+  </div>
+
+  <!-- Products Section -->
+  <div class="products-section">
+    <div class="top-bar">
+      <input type="text" id="searchInput" placeholder="Search products..." />
+      <select id="sortSelect">
+        <option value="name">Sort by Name</option>
+        <option value="price">Sort by Price</option>
+      </select>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      {% for product in products %}
+      <div class="product-card" data-category="{{ product.category }}" data-price="{{ product.price }}">
+        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        <div class="product-name">{{ product.name }}</div>
+        <div class="product-price">₹{{ product.price }}</div>
+        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-description-link">View Description</a>
+        <form action="{{ url_for('add_to_cart') }}" method="POST">
+          <input type="hidden" name="product_id" value="{{ product.id }}">
+          <input type="number" name="quantity" value="1" min="1" max="99">
+          <button type="submit" class="add-to-cart">Add to Cart</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Hamburger Menu
+  document.getElementById("menu-toggle").addEventListener("click", function () {
+    document.getElementById("nav-links").classList.toggle("show");
+  });
+
+  // Filtering and sorting
+  const searchInput = document.getElementById("searchInput");
+  const sortSelect = document.getElementById("sortSelect");
+  const productGrid = document.getElementById("productGrid");
+  const categoryFilters = document.querySelectorAll(".category-filter");
+  const priceRadios = document.querySelectorAll("input[name='price']");
+
+  function filterProducts() {
+    const query = searchInput.value.toLowerCase();
+    const selectedCategories = [...categoryFilters].filter(cb => cb.checked).map(cb => cb.value);
+    const priceRange = [...priceRadios].find(rb => rb.checked)?.value;
+
+    [...productGrid.children].forEach(card => {
+      const name = card.querySelector(".product-name").textContent.toLowerCase();
+      const category = card.dataset.category;
+      const price = parseInt(card.dataset.price);
+
+      let show = name.includes(query);
+
+      if (selectedCategories.length) {
+        show = show && selectedCategories.includes(category);
+      }
+
+      if (priceRange) {
+        const [min, max] = priceRange.split("-").map(Number);
+        show = show && price >= min && price <= max;
+      }
+
+      card.style.display = show ? "block" : "none";
+    });
+  }
+
+  function sortProducts() {
+    const value = sortSelect.value;
+    const cards = [...productGrid.children];
+
+    cards.sort((a, b) => {
+      if (value === "name") {
+        return a.querySelector(".product-name").textContent.localeCompare(b.querySelector(".product-name").textContent);
+      } else {
+        return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+      }
+    });
+
+    cards.forEach(card => productGrid.appendChild(card));
+  }
+
+  searchInput.addEventListener("input", filterProducts);
+  sortSelect.addEventListener("change", () => {
+    sortProducts();
+    filterProducts();
+  });
+  categoryFilters.forEach(cb => cb.addEventListener("change", filterProducts));
+  priceRadios.forEach(rb => rb.addEventListener("change", filterProducts));
+</script>
+
+</body>
+</html>
