@@ -952,6 +952,11 @@ def reset_password(token):
 
     conn.close()
     return render_template('reset_password.html')
+@app.route('/admin/users')
+def list_users():
+    users = User.query.all()
+    users_data = [{'id': u.id, 'username': u.username, 'email': u.email} for u in users]
+    return jsonify(users_data)
 @app.route('/logout')
 def logout():
     session.clear()
