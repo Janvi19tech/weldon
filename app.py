@@ -954,9 +954,27 @@ def reset_password(token):
     return render_template('reset_password.html')
 @app.route('/admin/users')
 def list_users():
-    users = User.query.all()
-    users_data = [{'id': u.id, 'username': u.username, 'email': u.email} for u in users]
-    return jsonify(users_data)
+    try:
+        # Adjust path if your .db file is inside a folder like 'instance' or 'database'
+        conn = sqlite3.connect('techweld.db')  
+        cursor = conn.cursor()
+        
+        # Adjust the table and columns if needed
+        cursor.execute("SELECT id, username, email FROM users")  
+        users = cursor.fetchall()
+        conn.close()
+
+        users_list = []
+        for user in users:
+            users_list.append({
+                "id": user[0],
+                "username": user[1],
+                "email": user[2]
+            })
+
+        return jsonify(users_list)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 @app.route('/logout')
 def logout():
     session.clear()
