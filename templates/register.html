@@ -5,7 +5,12 @@
   <title>Register - TechWeldEngineers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -19,7 +24,6 @@
       padding-top: 80px;
     }
 
-    /* Navbar styles */
     .navbar {
       background-color: #000;
       color: #fff;
@@ -104,17 +108,16 @@
       }
     }
 
-    /* Register form styles */
-.form-container {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 85%;                /* Changed from 90% to 85% */
-  max-width: 360px;          /* Changed from 400px to 360px */
-  margin: 20px auto;
-  color: #1a1a1a;
-}
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 85%;
+      max-width: 360px;
+      margin: 20px auto;
+      color: #1a1a1a;
+    }
 
     .form-container h2 {
       text-align: center;
@@ -163,6 +166,24 @@
       margin-top: -8px;
       margin-bottom: 10px;
     }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 40px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 16px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -200,14 +221,20 @@
       <input type="email" name="email" id="email" required>
 
       <label for="password">Password:</label>
-      <input type="password" name="password" id="password" required>
+      <div class="password-wrapper">
+        <input type="password" name="password" id="password" required>
+        <i class="fa-solid fa-eye toggle-password" data-toggle="password"></i>
+      </div>
 
       {% if error %}
         <div class="error-message">{{ error }}</div>
       {% endif %}
 
       <label for="confirm_password">Confirm Password:</label>
-      <input type="password" name="confirm_password" id="confirm_password" required>
+      <div class="password-wrapper">
+        <input type="password" name="confirm_password" id="confirm_password" required>
+        <i class="fa-solid fa-eye toggle-password" data-toggle="confirm_password"></i>
+      </div>
 
       <button type="submit">Register</button>
     </form>
@@ -215,10 +242,27 @@
   </div>
 
   <script>
+    // Navbar toggle
     const toggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
     toggle.addEventListener('click', () => {
       navLinks.classList.toggle('show');
+    });
+
+    // Eye icon toggle
+    const toggleIcons = document.querySelectorAll('.toggle-password');
+
+    toggleIcons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        const inputId = icon.getAttribute('data-toggle');
+        const input = document.getElementById(inputId);
+
+        const isPassword = input.getAttribute('type') === 'password';
+        input.setAttribute('type', isPassword ? 'text' : 'password');
+
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+      });
     });
   </script>
 

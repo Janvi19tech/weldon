@@ -5,7 +5,12 @@
   <title>Login - TechWeldEngineers</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -19,7 +24,6 @@
       padding-top: 80px;
     }
 
-    /* Navbar styles */
     .navbar {
       background-color: #000;
       color: #fff;
@@ -65,7 +69,6 @@
       margin: 4px 0;
     }
 
-    /* Mobile responsiveness */
     @media (max-width: 768px) {
       .menu-toggle {
         display: flex;
@@ -92,7 +95,6 @@
       }
     }
 
-    /* Login form styles */
     .form-container {
       background-color: #fff;
       padding: 30px;
@@ -121,6 +123,24 @@
       margin-bottom: 14px;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      padding-right: 40px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #555;
     }
 
     .form-container button {
@@ -152,7 +172,6 @@
       text-decoration: underline;
     }
 
-    /* Flash message styles */
     .flash-message {
       background-color: #dc3545;
       color: #fff;
@@ -197,7 +216,10 @@
       <input type="email" name="email" id="email" required>
 
       <label for="password">Password:</label>
-      <input type="password" name="password" id="password" required>
+      <div class="password-wrapper">
+        <input type="password" name="password" id="password" required>
+        <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+      </div>
 
       <a href="{{ url_for('forgot_password') }}" class="forgot-password">Forgot Password?</a>
 
@@ -216,10 +238,22 @@
   {% endwith %}
 
   <script>
+    // Hamburger toggle
     const toggle = document.getElementById('menu-toggle');
     const navLinks = document.getElementById('nav-links');
     toggle.addEventListener('click', () => {
       navLinks.classList.toggle('show');
+    });
+
+    // Eye icon password toggle
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      this.classList.toggle("fa-eye");
+      this.classList.toggle("fa-eye-slash");
     });
   </script>
 </body>
