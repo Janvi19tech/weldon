@@ -31,24 +31,26 @@
       gap: 40px;
     }
 
-   .cart-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 30px;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 20px;
-  text-align: center;
-}
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 20px;
+      text-align: center;
+    }
+
     .cart-item img {
       width: 110px;
       border-radius: 6px;
       margin-right: 20px;
- flex-shrink: 0;
+      flex-shrink: 0;
     }
 
     .item-details h4 {
       margin: 0 0 8px;
+      font-size: 18px;
     }
 
     .item-details p {
@@ -99,20 +101,6 @@
       text-decoration: none;
     }
 
-    .coupon-box input {
-      width: 70%;
-      padding: 10px;
-      margin-right: 10px;
-    }
-
-    .coupon-box button {
-      padding: 10px 14px;
-      background: black;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
     .empty-cart {
       text-align: center;
       font-size: 18px;
@@ -145,13 +133,6 @@
       margin-right: 10px;
       border-radius: 50%;
       background-color: white;
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
     }
 
     .nav-links {
@@ -240,11 +221,15 @@
       {% if cart_items %}
       {% for item in cart_items %}
       <div class="cart-item">
-        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" />
+        <a href="{{ url_for('product_detail', product_id=item.product_id) }}" style="text-decoration: none; color: inherit;">
+          <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}" />
+          <div class="item-details">
+            <h4>{{ item.name }}</h4>
+          </div>
+        </a>
         <div class="item-details">
-          <h4>{{ item.name }}</h4>
           <p>Price: ₹{{ item.price }}</p>
-                 <div class="qty">
+          <div class="qty">
             <form action="{{ url_for('update_cart') }}" method="POST">
               <input type="hidden" name="product_id" value="{{ item.product_id }}" />
               <button type="submit" name="action" value="decrease">-</button>
@@ -252,7 +237,6 @@
               <button type="submit" name="action" value="increase">+</button>
             </form>
           </div>
-
           <form action="{{ url_for('remove_from_cart') }}" method="POST">
             <input type="hidden" name="product_id" value="{{ item.product_id }}" />
             <button type="submit" style="background: none; border: none; color: red; font-size: 14px; cursor: pointer;">
@@ -276,8 +260,7 @@
       <div class="summary-line total"><span>Order Total</span><span>₹{{ total }}</span></div>
 
       <a href="{{ url_for('checkout') }}" class="checkout-btn">PROCEED TO SHIPPING</a>
-
-         </div>
+    </div>
     {% endif %}
   </div>
 

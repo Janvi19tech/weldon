@@ -359,17 +359,26 @@ def add_to_cart():
         return redirect(url_for('login'))
     
     product_id = request.form['product_id']
+    quantity = int(request.form.get('quantity', 1))  # ✅ Read quantity from form
     user_id = session['user_id']
+
     conn = get_db_connection()
     c = conn.cursor()
+
+    # Check if product already exists in the cart
     cart_item = c.execute('SELECT * FROM cart WHERE user_id = ? AND product_id = ?', (user_id, product_id)).fetchone()
+
     if cart_item:
-        new_quantity = cart_item['quantity'] + 1
+        # ✅ Add selected quantity to existing quantity
+        new_quantity = cart_item['quantity'] + quantity
         c.execute('UPDATE cart SET quantity = ? WHERE id = ?', (new_quantity, cart_item['id']))
     else:
-        c.execute('INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)', (user_id, product_id, 1))
+        # ✅ Insert selected quantity
+        c.execute('INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)', (user_id, product_id, quantity))
+
     conn.commit()
     conn.close()
+
     flash('Product added to cart!', 'success')
     return redirect(url_for('products'))
 

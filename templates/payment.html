@@ -141,15 +141,15 @@
         Please proceed with payment.
       </div>
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <div class="flash-message">
-            {% for message in messages %}
-              {{ message }}
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
+     {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'payment' %}
+        <div class="flash-message">{{ message }}</div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
       <form id="payment-form">
         <div class="payment-options">

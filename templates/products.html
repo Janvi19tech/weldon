@@ -13,7 +13,6 @@
       background-color: #f8f8f8;
     }
 
-    /* Navbar */
     .navbar {
       background-color: #000;
       color: white;
@@ -34,24 +33,12 @@
       flex-wrap: nowrap;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-
     .logo img {
       height: 40px;
       width: 40px;
       margin-right: 10px;
       border-radius: 50%;
       background-color: white;
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
     }
 
     .nav-links {
@@ -82,10 +69,6 @@
     }
 
     @media (max-width: 768px) {
-      .navbar-container {
-        flex-wrap: nowrap;
-      }
-
       .nav-links {
         flex-direction: column;
         background: #000;
@@ -121,13 +104,13 @@
       padding: 1rem;
       border-right: 1px solid #ddd;
     }
-.sidebar label {
-  display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.95rem;
-  color: #333;
-}
 
+    .sidebar label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
 
     .products-section {
       flex: 1;
@@ -185,15 +168,6 @@
       margin: 0.5rem 0;
     }
 
-    .add-to-cart {
-      background-color: #333;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
     .product-description-link {
       display: block;
       margin-top: 0.4rem;
@@ -201,7 +175,62 @@
       color: #007bff;
     }
 
-    /* Responsive */
+    .add-to-cart {
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+      gap: 6px;
+    }
+
+    .qty-btn {
+      background-color: #ddd;
+      border: none;
+      padding: 4px 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .quantity-input {
+      width: 40px;
+      text-align: center;
+      font-size: 14px;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+    .warranty-note {
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      color: #555;
+    }
+
+    .filter-toggle-btn {
+      display: none;
+      margin: 1rem 0 0 1rem;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -226,28 +255,18 @@
         transform: translateX(0);
       }
 
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .filter-toggle-btn {
+        display: block;
       }
 
-      .filter-toggle-btn {
-        position: fixed;
-        top: 70px;
-        left: 10px;
-        z-index: 1100;
-        background-color: #000;
-        color: #fff;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 4px;
-        cursor: pointer;
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar">
   <div class="navbar-container">
     <div class="logo">
@@ -268,11 +287,9 @@
   </div>
 </nav>
 
-<!-- Filter Toggle Button -->
-<button class="filter-toggle-btn" onclick="document.getElementById('sidebar').classList.toggle('show')">Filters</button>
+<button class="filter-toggle-btn" id="filter-toggle">Filters</button>
 
 <div class="container">
-  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <h3>Category</h3>
     <label><input type="checkbox" class="category-filter" value="Machine" /> Machines</label>
@@ -287,7 +304,6 @@
     <label><input type="radio" name="price" value="5000-99999" /> Above ₹5000</label>
   </div>
 
-  <!-- Products Section -->
   <div class="products-section">
     <div class="top-bar">
       <input type="text" id="searchInput" placeholder="Search products..." />
@@ -300,13 +316,19 @@
     <div class="product-grid" id="productGrid">
       {% for product in products %}
       <div class="product-card" data-category="{{ product.category }}" data-price="{{ product.price }}">
-        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+          <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        </a>
         <div class="product-name">{{ product.name }}</div>
         <div class="product-price">₹{{ product.price }}</div>
         <a href="{{ url_for('product_detail', product_id=product.id) }}" class="product-description-link">View Description</a>
-        <form action="{{ url_for('add_to_cart') }}" method="POST">
+        <form action="{{ url_for('add_to_cart') }}" method="POST" class="cart-form">
           <input type="hidden" name="product_id" value="{{ product.id }}">
-          <input type="number" name="quantity" value="1" min="1" max="99">
+          <div class="quantity-selector">
+            <button type="button" class="qty-btn" onclick="changeQty(this, -1)">−</button>
+            <input class="quantity-input" type="number" name="quantity" value="1" min="1" max="99" readonly>
+            <button type="button" class="qty-btn" onclick="changeQty(this, 1)">+</button>
+          </div>
           <button type="submit" class="add-to-cart">Add to Cart</button>
         </form>
       </div>
@@ -316,12 +338,10 @@
 </div>
 
 <script>
-  // Hamburger Menu
   document.getElementById("menu-toggle").addEventListener("click", function () {
     document.getElementById("nav-links").classList.toggle("show");
   });
 
-  // Filtering and sorting
   const searchInput = document.getElementById("searchInput");
   const sortSelect = document.getElementById("sortSelect");
   const productGrid = document.getElementById("productGrid");
@@ -337,7 +357,6 @@
       const name = card.querySelector(".product-name").textContent.toLowerCase();
       const category = card.dataset.category;
       const price = parseInt(card.dataset.price);
-
       let show = name.includes(query);
 
       if (selectedCategories.length) {
@@ -375,6 +394,36 @@
   });
   categoryFilters.forEach(cb => cb.addEventListener("change", filterProducts));
   priceRadios.forEach(rb => rb.addEventListener("change", filterProducts));
+
+  function changeQty(button, delta) {
+    const input = button.parentElement.querySelector('.quantity-input');
+    let current = parseInt(input.value);
+    if (!isNaN(current)) {
+      let newVal = current + delta;
+      if (newVal >= 1 && newVal <= 99) {
+        input.value = newVal;
+      }
+    }
+  }
+
+  // Filter sidebar toggle and close on outside click
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('filter-toggle');
+
+  toggleBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    sidebar.classList.toggle('show');
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+      sidebar.classList.remove('show');
+    }
+  });
+
+  sidebar.addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
 </script>
 
 </body>
