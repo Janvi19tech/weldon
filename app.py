@@ -67,8 +67,8 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-RAZORPAY_KEY_ID = 'rzp_test_aAhXUWNLte2RJ5'
-RAZORPAY_KEY_SECRET = 'XFiL2oD1raVoTdBfKgH6h4yQ'
+RAZORPAY_KEY_ID ="rzp_live_WSY3KvkCinrbRo"
+RAZORPAY_KEY_SECRET = "1j7KPZoJffIYa4Zp3NArieDb"
 razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 razorpay_key=RAZORPAY_KEY_ID
 
